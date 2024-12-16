@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Santa</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #ff7878;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            color: white;
+        }
+
+        iframe {
+            margin: 20px 0;
+            border: none;
+            border-radius: 8px;
+        }
+
+        button {
+            display: none; /* Initially hidden */
+            padding: 15px 30px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #43a047;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #388e3c;
+        }
+
+        button.visible {
+            display: inline-block; /* Show the button after 15 seconds */
+        }
+    </style>
+</head>
+<body>
+    <h1>🎄 Welcome to Sigma++ Secret Santa 🎅</h1>
+    <iframe 
+        src="https://www.youtube.com/embed/KtJzLfRJ5bI?autoplay=1&?mute=1"
+        width="80%"
+        height="60%"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+    </iframe>
+    <button id="continueButton" onclick="goToCreateRoom()">Continue</button>
+
+    <script>
+        // Show the Continue button after 15 seconds
+        setTimeout(() => {
+            document.getElementById('continueButton').classList.add('visible');
+        }, 15000);
+
+        // Navigate to Create Room Page (example, needs to link to your Django view)
+        function goToRooms() {
+            window.location.href = "/rooms/";
+        }
+    </script>
+</body>
+</html>
