@@ -20,6 +20,9 @@ def create_room(request):
 def send_invites(request):
     body = json.loads(request.body)
     participants = body.get('participants', [])
+    budget = 0
+    for x in participants:
+        budget = min(x['budget'], budget)
     # Shuffle participants to randomize Secret Santa assignment
     shuffled_participants = participants[:]
     random.shuffle(shuffled_participants)
@@ -37,12 +40,12 @@ def send_invites(request):
 
         # Construct message
         message = (
-            f"Hi {santa['email']},\n"
-            f"You are the Secret Santa for {receiver['email']}!\n"
+            f"Hi {santa['name']},\n"
+            f"You are the Secret Santa for {receiver['name']}!\n"
             f"Here are some details about them:\n"
             f"Address: {receiver['address']}\n"
             f"Hobby: {receiver['hobby']}\n"
-            f"Budget: {receiver['budget']}\n"
+            f"Budget: {budget}/-\n"
             f"Happy gifting!"
         )
         # message = f"Hi {santa['email']}, you gotta gift {receiver['email']}"
