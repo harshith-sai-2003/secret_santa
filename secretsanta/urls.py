@@ -23,5 +23,5 @@ urlpatterns = [
     path('', views.home, name='home'),
     path("create-room/", views.create_room, name="create_room"),
     path("send-invites/", views.send_invites, name="send_invites"),
-    path('rooms/', views.rooms, name='rooms'),
+    path('rooms/', views.Room, name='rooms'),
 ]
