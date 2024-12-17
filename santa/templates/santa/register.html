@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+    <h1>User Registration</h1>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="isPresentInBangalore">Present in Bangalore (True/False):</label><br>
+        <input type="text" id="isPresentInBangalore" name="isPresentInBangalore"><br><br>
+
+        <label for="address">Address:</label><br>
+        <input type="text" id="address" name="address" required><br><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="phone">Phone:</label><br>
+        <input type="text" id="phone" name="phone" required><br><br>
+
+        <label for="budget">Budget:</label><br>
+        <input type="number" id="budget" name="budget" required><br><br>
+
+        <label for="hobby">Hobby:</label><br>
+        <input type="text" id="hobby" name="hobby"><br><br>
+
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>

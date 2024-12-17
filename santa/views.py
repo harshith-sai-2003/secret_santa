@@ -10,17 +10,54 @@ import requests, json
 def home(request):
     return render(request, 'santa/home.html')
 
-def generate_room_code():
-    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+def register(request):
+    if request.method == "POST":
+        # Extract data from the form
+        name = request.POST.get('name', '')
+        isPresentInBangalore = request.POST.get('isPresentInBangalore', 'false').lower() == 'true'
+        address = request.POST.get('address', '')
+        email = request.POST.get('email', '')
+        phone = request.POST.get('phone', '')
+        budget = int(request.POST.get('budget', 0))  # Default to 0 if not provided
+        hobby = request.POST.get('hobby', '')
 
-def create_room(request):
-    room = Room.objects.create(code=generate_room_code())
-    return JsonResponse({"room_code": room.code})
+        # Save data to the database
+        try:
+            Participant.objects.create(
+                name=name,
+                isPresentInBangalore=isPresentInBangalore,
+                address=address,
+                email=email,
+                phone=phone,
+                budget=budget,
+                hobby=hobby
+            )
+            return JsonResponse({"status": "success", "message": "User registered successfully!"})
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)})
+
+    # Render the registration form for GET request
+    return render(request, 'santa/register.html')
 
 def send_invites(request):
-    body = json.loads(request.body)
-    participants = body.get('participants', [])
-    budget = 0
+    # Fetch participants data from the database
+    participants_queryset = Participant.objects.all()
+    participants = []
+
+    # Convert queryset to a list of dictionaries
+    for p in participants_queryset:
+        participants.append({
+            "name": p.name,
+            "isPresentInBangalore": p.isPresentInBangalore,
+            "address": p.address,
+            "email": p.email,
+            "phone": p.phone,
+            "budget": p.budget,
+            "hobby": p.hobby
+        })
+
+    # Default budget
+    budget = float('inf')  # Set to a large value initially
     for x in participants:
         budget = min(x['budget'], budget)
     # Shuffle participants to randomize Secret Santa assignment
@@ -32,7 +69,7 @@ def send_invites(request):
         pairings.append({"santa": shuffled_participants[i], "receiver": shuffled_participants[(i+1)%len(shuffled_participants)]})
 
     api_url = "https://www.fast2sms.com/dev/bulkV2?authorization=apiHere&route=q&message=messageHere&flash=0&numbers=numberHere&schedule_time="
-    api_key = "P8D6GMtoUkLmaIxqZQzgCcepjb7RJEdSBn4HK9iy1XFw5f2hruJQVrZCGn1Befp2S5ciYg3Rzvj4W0yL"  # Replace with your actual API key
+    api_key = ""  # Replace with your actual API key
 
     for pairing in pairings:
         santa = pairing['santa']
@@ -76,6 +113,7 @@ def send_invites(request):
         try:
             # Send the SMS
             # response = requests.request("GET", url, headers=headers, params=querystring)
+            response = ''
             print(querystring)
             # print(response.text)
 

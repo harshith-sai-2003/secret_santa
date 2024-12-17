@@ -21,7 +21,6 @@ from santa import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', views.home, name='home'),
-    path("create-room/", views.create_room, name="create_room"),
     path("send-invites/", views.send_invites, name="send_invites"),
-    path('rooms/', views.Room, name='rooms'),
+    path('register/', views.register, name='register'),
 ]
